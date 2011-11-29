@@ -38,6 +38,8 @@ class WXComponent(WXBaseComponent, AbstractTkComponent):
         super(WXComponent, self).initialize()
         shell = self.shell_obj
         self.set_enabled(shell.enabled)
+        if shell.bg_color:
+            self.set_bg_color(shell.bg_color)
         if not shell.visible:
             # Some Containers will turn off the visibility of their 
             # children entirely on the Qt side when the parent-child 
@@ -160,7 +162,7 @@ class WXComponent(WXBaseComponent, AbstractTkComponent):
         given color.
         
         """
-        pass
+        self.set_bg_color(color)
 
     def shell_fg_color_changed(self, color):
         """ The change handler for the 'fg_color' attribute on the parent.
@@ -191,6 +193,16 @@ class WXComponent(WXBaseComponent, AbstractTkComponent):
         """
         self.shell_obj.parent.set_needs_update_constraints()
         self.widget.Show(visible)
+
+    def set_bg_color(self, color):
+        """ Sets the background color of the widget.
+
+        """
+        if not color:
+            wx_color = wx.NullColor
+        else:
+            wx_color = wx.Colour(*color)
+        self.widget.SetBackgroundColour(wx_color)
 
     #--------------------------------------------------------------------------
     # Convenience Methods 
