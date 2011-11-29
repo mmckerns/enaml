@@ -44,14 +44,8 @@ defn MainWindow:
             # Set a sensible minimum height for the frame
             frame.height >= 150,
         ]
-        PushButton -> frame:
-            text = 'Frame'
-            # Tell the layout manager to ignore hugging constraints
-            # for this button so that it expands in both directions.
-            # (Setting to 'weak' would also work, but requires more 
-            # computation by the solver).
-            hug_width = 'ignore'
-            hug_height = 'ignore'
+        Html -> frame:
+            source = '<center><h1>Hello Enaml!</h1></center>'
         PushButton -> add_button:
             text = 'Add'
             # Uncomment the next four lines to see how to play around with 

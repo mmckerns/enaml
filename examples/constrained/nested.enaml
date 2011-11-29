@@ -51,10 +51,8 @@ defn MainWindow:
                 frame.height >= 100,
                 frame.width >= 200,
             ]
-            PushButton -> frame:
-                text = 'Frame'
-                hug_width = 'ignore'
-                hug_height = 'ignore'
+            Html -> frame:
+                source = '<center><h1>Hello Enaml!</h1></center>'
             PushButton -> add_button:
                 text = 'Add'
             PushButton -> remove_button:
