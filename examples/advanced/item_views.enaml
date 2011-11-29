@@ -147,6 +147,7 @@ defn MainWindow:
 
     """
     Window:
+        title = 'Item Views'
         Splitter:
             ListView:
                 item_model = node_model
