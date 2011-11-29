@@ -1,0 +1,107 @@
+
+
+:: python ::
+
+from enaml.item_models.abstract_item_model import AbstractItemModel
+
+
+class Node(object):
+
+    def __init__(self, parent, idx):
+        self.parent = parent
+        self.idx = idx
+        self.children = []
+
+    def data(self):
+        parent = self.parent
+        if parent is None:
+            stem = ''
+        else:
+            stem = parent.data() + ','
+        return stem + str(self.idx)
+
+
+def create_nodes(parent):
+    return [Node(parent, i) for i in xrange(10)]
+
+
+def populate(node):
+    children = create_nodes(node)
+    node.children = children
+
+
+class NodeModel(AbstractItemModel):
+
+    def __init__(self):
+        super(NodeModel, self).__init__()
+        self.children = create_nodes(None)
+        for child in self.children[::2]:
+            populate(child)
+            for subchild in child.children[1::2]:
+                populate(subchild)
+                for subsubchild in subchild.children[::3]:
+                    populate(subsubchild)
+    
+    def index(self, row, column, parent=None):
+        if self.has_index(row, column, parent):
+            if parent is None:
+                idx = self.create_index(row, column, self.children[row])
+            else:
+                child_node = parent.context.children[row]
+                idx = self.create_index(row, column, child_node)
+            return idx
+
+    def parent(self, index):
+        """ Abstract method implementation that always returns None, 
+        forcing the model to be flat.
+
+        """
+        node_parent = index.context.parent
+        if node_parent is None:
+            return None
+        node_parent_parent = node_parent.parent
+        if node_parent_parent is None:
+            row = self.children.index(node_parent)
+            idx = self.create_index(row, 0, node_parent)
+        else:
+            row = node_parent_parent.children.index(node_parent)
+            idx = self.create_index(row, 0, node_parent)
+        return idx
+
+    def has_children(self, parent):
+        if parent is None:
+            return len(self.children) > 0
+        parent_node = parent.context
+        return len(parent_node.children) > 0
+
+    def row_count(self, parent=None):
+        if parent is None:
+            return len(self.children)
+        return len(parent.context.children)
+
+    def column_count(self, parent=None):
+        return 5
+    
+    def data(self, index):
+        if index is not None:
+            col = index.column
+            node = index.context
+            node_data = node.data()
+            return '(' + node_data + ') | ' + str(col)
+
+
+node_model = NodeModel()
+
+:: end ::
+
+
+defn MainWindow:
+    Window:
+        Splitter:
+            ListView:
+                item_model = node_model
+            TableView:
+                item_model = node_model
+            TreeView:
+                hug_width = 'ignore'
+                item_model = node_model
