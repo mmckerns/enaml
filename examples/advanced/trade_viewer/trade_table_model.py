@@ -1,3 +1,13 @@
+#------------------------------------------------------------------------------
+#  Copyright (c) 2011, Enthought, Inc.
+#  All rights reserved.
+#------------------------------------------------------------------------------
+""" Trade Viewer example table models.
+
+This module defines the data table models used by the TableViews in the
+events tab and the reports tab of the TradeViewer.
+
+"""
 from datetime import datetime
 from time import asctime
 
@@ -6,28 +16,31 @@ from enaml.styling.brush import Brush
 from enaml.styling.color import Color
 
 
-BRUSH_MAP = {
-    'option': Brush(Color.from_string('lightsteelblue'), None),
-    'forward': Brush(Color.from_string('paleturquoise'), None),
-    'swap': Brush(Color.from_string('khaki'), None),
-    'future': Brush(Color.from_string('white'), None),
-}
-
-
-def format_price(price):
-    return '%.2f' % price
-
-
-def format_timestamp(timestamp):
-    tt = datetime.fromtimestamp(timestamp).timetuple()
-    return asctime(tt)
-
-
 class TradeTable(AbstractTableModel):
 
+    brush_map = {
+        'option': Brush(Color.from_string('lightsteelblue'), None),
+        'forward': Brush(Color.from_string('paleturquoise'), None),
+        'swap': Brush(Color.from_string('khaki'), None),
+        'future': Brush(Color.from_string('white'), None),
+    }
+
+    @staticmethod
+    def format_price(price):
+        return '%.2f' % price
+
+    @staticmethod
+    def format_timestamp(timestamp):
+        tt = datetime.fromtimestamp(timestamp).timetuple()
+        return asctime(tt)
+
     def __init__(self, book):
+        super(AbstractTableModel, self).__init__()
         self._book = book
-        self._formatters = {'Price': format_price, 'Entry Time': format_timestamp}
+        self._formatters = {
+            'Price': self.format_price, 
+            'Entry Time': self.format_timestamp,
+        }
 
     def _get_book(self):
         return self._book
@@ -64,13 +77,12 @@ class TradeTable(AbstractTableModel):
     def background(self, index):
         row = index.row
         inst = self._book[row]['Instrument']
-        return BRUSH_MAP[inst]
-
-
-LIME_GREEN = Brush(Color.from_string('#ccffcc'), None)
+        return self.brush_map[inst]
 
 
 class ReportTable(AbstractTableModel):
+
+    bg_brush = Brush(Color.from_string('#ccffcc'), None)
 
     columns = [
         'Comment', 'Report', 'Priceable', 'Date', 'Last Event',
@@ -91,7 +103,7 @@ class ReportTable(AbstractTableModel):
         return str(index.row)
     
     def background(self, index):
-        return LIME_GREEN
+        return self.bg_brush
 
     def horizontal_header_data(self, section):
         return self.columns[section]

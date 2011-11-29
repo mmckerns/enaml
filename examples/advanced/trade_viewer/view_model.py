@@ -1,3 +1,15 @@
+#------------------------------------------------------------------------------
+#  Copyright (c) 2011, Enthought, Inc.
+#  All rights reserved.
+#------------------------------------------------------------------------------
+""" Trade Viewer example view models.
+
+This module defines a few simple classes that help drive the Trade
+Viewer ui components. The classes provide very thin management of 
+the data table models that are used by the various TableViews in 
+the ui.
+
+"""
 from traits.api import HasTraits, Instance, Str, Property, Dict
 
 from books import BOOKS

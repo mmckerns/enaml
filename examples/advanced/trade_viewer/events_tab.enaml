@@ -1,0 +1,60 @@
+#------------------------------------------------------------------------------
+#  Copyright (c) 2011, Enthought, Inc.
+#  All rights reserved.
+#------------------------------------------------------------------------------
+""" Trade Viewer Events Tab
+
+This Enaml module creates the content for the events tab in the trade
+viewer example. The content of this tab consists of a horizontal toolbar
+at the top of the tab, with the table of trade information below.
+
+In the toolbar, the filter field and button are kept centered provided 
+there is enough space.
+
+"""
+defn EventsToolBar(events_model):
+    Container:
+        constraints = [
+            hbox(
+                book_label, book_chooser, start_field, to_label, end_field, 
+                _space_, 
+                ffield, fbutton, 
+                _space_, 
+                view_label, view_box, column_box,
+            ),
+            (ffield.right == h_center) | 'weak',
+            align('v_center', *children),
+        ]
+        Label -> book_label:
+            text = 'Book'
+        ComboBox -> book_chooser:
+            items << events_model.book_choices
+            value := events_model.book_choice
+        DateEdit -> start_field:
+            pass
+        Label -> to_label:
+            text = 'to'
+        DateEdit -> end_field:
+            pass
+        Field -> ffield:
+            placeholder_text = 'Filter Regex...'
+        PushButton -> fbutton:
+            text = 'Filter'
+        Label -> view_label:
+            text = 'View'
+        ComboBox -> view_box:
+            items = ['Fx', 'Energy', 'Futures']
+            value = items[0]
+        ComboBox -> column_box:
+            items = ['Everything', 'Standard', 'Minimal']
+            value = items[0]
+
+
+defn EventsTab(events_model):
+    Tab:
+        title = 'Events'
+        EventsToolBar(events_model):
+            pass
+        TableView:
+            item_model = events_model.trade_table
+

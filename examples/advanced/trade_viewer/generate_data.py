@@ -1,3 +1,16 @@
+#------------------------------------------------------------------------------
+#  Copyright (c) 2011, Enthought, Inc.
+#  All rights reserved.
+#------------------------------------------------------------------------------
+""" Trade Viewer Data Generation
+
+This module generates the data for the Trade Viewer example. Simply 
+uncomment the lines in the __main__ clause and execute this script.
+This script is not indicative of good Python practices (i.e. heavy
+use of global variables), but it gets the job done and doesn't need
+to be any more complex.
+
+"""
 import random
 import string
 import numpy as np

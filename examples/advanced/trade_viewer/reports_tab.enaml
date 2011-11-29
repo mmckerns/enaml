@@ -1,0 +1,233 @@
+#------------------------------------------------------------------------------
+#  Copyright (c) 2011, Enthought, Inc.
+#  All rights reserved.
+#------------------------------------------------------------------------------
+""" Trade Viewer Reports Tab
+
+This Enaml module creates the content for the reports tab in the trade
+viewer example. The content of this tab consists of a tab control on the 
+top half of the screen with each tab containing various dummy controls.
+The bottom half of the screen contains a couple of group boxes, a table
+of data, and row of field controls. This tab is a mostly a mockup and
+has very little interaction with the data model.
+
+"""
+# Use a raw Python block to create a dummy table model for the tables
+# in the sub-tabs of the report tab. Since this is dummy mock-up data, 
+# there is no need for it to exist in its own .py file.
+:: python ::
+
+from enaml.item_models.standard_models import TableModel
+
+mockup_table = TableModel([[i + j for i in range(100)] for j in range(20)])
+
+:: end ::
+
+
+#------------------------------------------------------------------------------
+# Single Report Sub-Tab
+#------------------------------------------------------------------------------
+defn SingleTab:
+    Tab:
+        title = 'Single'
+        constraints = [
+            hbox(*children),
+        ]
+        Form:
+            Label:
+                text = 'Report'
+            ComboBox:
+                items = ['Fx Gamma Ladder Report']
+                value = items[0]
+            Label:
+                text = 'Run Against'
+            ComboBox:
+                pass
+            Label:
+                text = 'Aggregation'
+            ComboBox:
+                items = ['TopLevel']
+                value = items[0]
+            Label:
+                text = 'Report Date'
+            ComboBox:
+                items = ['28Nov2011']
+                value = items[0]
+            Label:
+                text = 'Run On'
+            ComboBox:
+                items = ['All Events']
+                value = items[0]
+        TableView:
+            resist_clip_height = 'weak'
+            item_model = mockup_table
+
+
+#------------------------------------------------------------------------------
+# Bunch Report Sub-Tab
+#------------------------------------------------------------------------------
+defn BunchTab:
+    Tab:
+        title = 'Bunch'
+        constraints = [
+            hbox(tv1, buttons, tv2),
+            tv1.width == tv2.width,
+        ]
+        TableView -> tv1:
+            resist_clip_height = 'weak'
+            item_model = mockup_table
+        Container -> buttons:
+            PushButton:
+                text = 'Delete'
+            PushButton:
+                text = 'Clone'
+            PushButton:
+                text = 'Customize'
+            PushButton:
+                text = 'Move Up'
+            PushButton:
+                text = 'Move Down'
+        TableView -> tv2:
+            resist_clip_height = 'weak'
+            item_model = mockup_table
+
+
+#------------------------------------------------------------------------------
+# Bottom Content
+#------------------------------------------------------------------------------
+defn OptionsBox:
+    GroupBox:
+        title = 'Options'
+        constraints = [
+            vbox(
+                hbox(dist_check, dist_label, cbb_field),
+                hbox(cmnt_label, cmnt_field),
+            ) | 'required',
+            align('v_center', dist_check, dist_label, cbb_field),
+            align('v_center', cmnt_label, cmnt_field),
+            cbb_field.left == cmnt_field.left,
+        ]
+        CheckBox -> dist_check:
+            text = 'Distribute'
+            checked = True
+        Label -> dist_label:
+            text = 'CBB'
+        Field -> cbb_field:
+            value = 'FX'
+            read_only = True 
+            bg_color = '#EEEEEE'
+        Label -> cmnt_label:
+            text = 'Comment'
+        Field -> cmnt_field:
+            pass
+
+
+defn MarketButtons:
+    PushButton:
+        text = 'Snap All'
+    PushButton:
+        text = 'Spots'
+    PushButton:
+        text = 'Fixes'
+    PushButton:
+        text = 'Vols'
+    PushButton:
+        text = 'IRVols'
+    PushButton:
+        text = 'Custom'
+    PushButton:
+        text = 'Import'
+    PushButton:
+        text = 'Close to 28Nov11'
+
+
+defn MarketDataBox:
+    GroupBox:
+        title = 'Market Data'
+        constraints = [
+            vbox(
+                hbox(close_box, terse_check, _space_),
+                hbox(*btns),
+            )
+        ]
+        ComboBox -> close_box:
+            items = ['LDN Close 28Nov11', 'LDN Open 28Nov11']
+            value = items[0]
+        CheckBox -> terse_check:
+            text = 'Terse'
+        MarketButtons -> btns:
+            pass
+
+
+defn TopControlBar:
+    Container:
+        constraints = [
+            horizontal(left, pb, opt_box, mkt_box, right),
+            vertical(top, opt_box, bottom),
+            vertical(top, mkt_box, bottom),
+            align('v_center', pb, opt_box, mkt_box),
+        ]
+        PushButton -> pb:
+            hug_width = 'strong'
+            text = 'Run'
+        OptionsBox -> opt_box, dist_check as dist, cmnt_field as cmnt:
+            pass
+        MarketDataBox -> mkt_box:
+            visible << dist.checked
+            enabled << False if cmnt.value == 'disable' else True
+
+
+defn BottomControlBar:
+    Container:
+        constraints = [
+            hbox(*children),
+            align('v_center', *children),
+            users.width == books.width,
+            books.width == reports.width,
+            hours.width == 30,
+        ]
+        Label:
+            text = 'Users'
+        Field -> users:
+            pass
+        Label:
+            text = 'Books'
+        Field -> books:
+            pass
+        PushButton:
+            text = 'Expand'
+        Label:
+            text = 'Reports'
+        Field -> reports:
+            pass
+        Label:
+            text = 'Hours'
+        Field -> hours:
+            value = 12
+        PushButton:
+            text = 'tags'
+        CheckBox:
+            text = 'Terse'
+
+
+#------------------------------------------------------------------------------
+# ReportsTab
+#------------------------------------------------------------------------------
+defn ReportsTab(report_model):
+    Tab:
+        title = 'Reports'
+        Tabbed:
+            hug_height = 'strong'
+            SingleTab:
+                pass
+            BunchTab:
+                pass
+        Container:
+            TopControlBar:
+                pass
+            TableView:
+                item_model = report_model.report_table
+                vertical_header_visible = False
+            BottomControlBar:
+                pass
+            

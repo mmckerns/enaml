@@ -1,5 +1,16 @@
+#------------------------------------------------------------------------------
+#  Copyright (c) 2011, Enthought, Inc.
+#  All rights reserved.
+#------------------------------------------------------------------------------
+""" Trade Viewer Book class.
 
+This module defines the simple Book object for the Trade Viewer example.
+It is a simple object that wraps a group of trades represented by a 
+Numpy structured array. A few predefined Book objects are available 
+via the BOOKS dictionary. These books are populated with trades generated
+by the the generate_data.py script.
 
+"""
 class Book(object):
 
     def __init__(self, trades):
@@ -29,9 +40,9 @@ _trades = load_trades()
 
 BOOKS = {
     'ALL': Book(_trades),
-    'FOO': Book(_trades[:2500000]),
-    'BAR': Book(_trades[2500000:5000000]),
-    'BAZ': Book(_trades[5000000:7500000]),
-    'HAM': Book(_trades[7500000:]),
+    'EUR': Book(_trades[:2500000]),
+    'JPY': Book(_trades[2500000:5000000]),
+    'GBP': Book(_trades[5000000:7500000]),
+    'SKK': Book(_trades[7500000:]),
 }
 
