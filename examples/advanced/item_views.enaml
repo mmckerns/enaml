@@ -1,12 +1,30 @@
+#------------------------------------------------------------------------------
+#  Copyright (c) 2011, Enthought, Inc.
+#  All rights reserved.
+#------------------------------------------------------------------------------
+""" Item Views Example
 
+This example shows how an instance of AbstractItemModel can be viewed
+by any of the ItemView components (currently ListView, TableView, and 
+TreeView). The data shown by a particular control will be limited by 
+the depth capacity of the control. In this example, our model is a tree
+structure. The ListView shows only the first column of the tree (1D), 
+the TableView shows the data for columns of the root nodes (2D), while
+the TreeView can display the full range of the model data.
 
+"""
+# Use a raw Python block to build up some dummy tree data and 
+# a model with which to view it in the ui.
 :: python ::
 
 from enaml.item_models.abstract_item_model import AbstractItemModel
 
 
 class Node(object):
+    """ A simple doubly-linked node object that lazily computes 
+    its data which is dependent on the data of its parent.
 
+    """
     def __init__(self, parent, idx):
         self.parent = parent
         self.idx = idx
@@ -22,30 +40,34 @@ class Node(object):
 
 
 def create_nodes(parent):
+    """ A factory function that creates a list of 10 Nodes using the
+    given parent.
+
+    """
     return [Node(parent, i) for i in xrange(10)]
 
 
 def populate(node):
+    """ A function which adds 10 children to the given node.
+
+    """
     children = create_nodes(node)
     node.children = children
 
 
 class NodeModel(AbstractItemModel):
+    """ An AbstractItemModel subclass that manages the data contained
+    by a list of root Node objects.
 
-    def __init__(self):
+    """
+    def __init__(self, nodes):
         super(NodeModel, self).__init__()
-        self.children = create_nodes(None)
-        for child in self.children[::2]:
-            populate(child)
-            for subchild in child.children[1::2]:
-                populate(subchild)
-                for subsubchild in subchild.children[::3]:
-                    populate(subsubchild)
-    
+        self.nodes = nodes
+        
     def index(self, row, column, parent=None):
         if self.has_index(row, column, parent):
             if parent is None:
-                idx = self.create_index(row, column, self.children[row])
+                idx = self.create_index(row, column, self.nodes[row])
             else:
                 child_node = parent.context.children[row]
                 idx = self.create_index(row, column, child_node)
@@ -61,41 +83,69 @@ class NodeModel(AbstractItemModel):
             return None
         node_parent_parent = node_parent.parent
         if node_parent_parent is None:
-            row = self.children.index(node_parent)
-            idx = self.create_index(row, 0, node_parent)
+            row = self.nodes.index(node_parent)
         else:
             row = node_parent_parent.children.index(node_parent)
-            idx = self.create_index(row, 0, node_parent)
+        idx = self.create_index(row, 0, node_parent)
         return idx
 
     def has_children(self, parent):
+        """ Returns whether or not the node associated with the 
+        given parent index has children.
+
+        """
         if parent is None:
-            return len(self.children) > 0
-        parent_node = parent.context
-        return len(parent_node.children) > 0
+            return len(self.nodes) > 0
+        return len(parent.context.children) > 0
 
     def row_count(self, parent=None):
+        """ Returns the number of rows associated with the given parent
+        index.
+
+        """
         if parent is None:
-            return len(self.children)
+            return len(self.nodes)
         return len(parent.context.children)
 
     def column_count(self, parent=None):
+        """ Returns the number of columns associate with the given parent
+        index.
+
+        """
         return 5
     
     def data(self, index):
-        if index is not None:
-            col = index.column
-            node = index.context
-            node_data = node.data()
-            return '(' + node_data + ') | ' + str(col)
+        """ Returns the lazily computed data for the given index.
+
+        """
+        col = index.column
+        node = index.context
+        node_data = node.data()
+        return '(' + node_data + ') | ' + str(col)
 
 
-node_model = NodeModel()
+# Build a simple tree of nodes:
+nodes = create_nodes(None)
+for node in nodes[::2]:
+    populate(node)
+    for child in node.children[1::2]:
+        populate(child)
+        for subchild in child.children[::3]:
+            populate(subchild)
+
+# Create an AbstractItemModel instance that can be used by the ItemViews
+# to display the data in the tree
+node_model = NodeModel(nodes)
 
 :: end ::
 
 
 defn MainWindow:
+    """ A simple window which arranges a ListView, TableView, and
+    TreeView in a horizontal splitter. Each of the ItemViews displays
+    data from the same AbstractItemModel instance.
+
+    """
     Window:
         Splitter:
             ListView:
@@ -103,5 +153,5 @@ defn MainWindow:
             TableView:
                 item_model = node_model
             TreeView:
-                hug_width = 'ignore'
                 item_model = node_model
+
