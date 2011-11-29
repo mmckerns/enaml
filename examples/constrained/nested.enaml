@@ -1,3 +1,7 @@
+#------------------------------------------------------------------------------
+#  Copyright (c) 2011, Enthought, Inc.
+#  All rights reserved.
+#------------------------------------------------------------------------------
 """ An example showing the unified layout across nested Containers.
 
 We have three Containers under the window, two sharing space on top and one
