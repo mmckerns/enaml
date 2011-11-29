@@ -1,11 +1,15 @@
+#------------------------------------------------------------------------------
+#  Copyright (c) 2011, Enthought, Inc.
+#  All rights reserved.
+#------------------------------------------------------------------------------
 """ Group boxes.
 
 We create two GroupBoxes containing Form layouts. The GroupBoxes have
 informative titles. CheckBoxes on the bottom of the window allow you to toggle
 the presence of the titles and whether they should be shown in a "flat" style or
 the default style.
-"""
 
+"""
 :: python ::
 
 def toggle_title(top_box, bottom_box):
@@ -30,13 +34,16 @@ def toggle_flat(*boxes):
 
 :: end ::
 
+
 defn MainWindow:
     Window:
         title = "Group Boxes"
         constraints = [
-            vbox(top_box,
+            vbox(
+                top_box,
                 bottom_box,
-                hbox(_space_, title_check, flat_check)),
+                hbox(_space_, title_check, flat_check),
+            ),
             align('midline', top_form, bottom_form),
         ]
         GroupBox -> top_box:
@@ -73,3 +80,4 @@ defn MainWindow:
             text = "Flat"
             checked = False
             toggled >> toggle_flat(top_box, bottom_box)
+
