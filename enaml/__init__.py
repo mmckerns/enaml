@@ -33,6 +33,9 @@ def default_toolkit():
     if toolkit == 'wx':
         return wx_toolkit()
 
+    if toolkit == 'wpf':
+        return wpf_toolkit()
+
     raise ValueError('Invalid Toolkit: %s' % toolkit)
 
 
@@ -72,6 +75,26 @@ def wx_toolkit():
     toolkit.update(OPERATORS)
     toolkit.update(LAYOUT_HELPERS)
     toolkit.app = WXApplication()
+
+    return toolkit
+
+
+def wpf_toolkit():
+    """ Creates and return a toolkit object for the WPF backend.
+
+    """
+    from .core.operators import OPERATORS
+    from .core.toolkit import Toolkit
+    from .widgets.constructors import CONSTRUCTORS
+    from .widgets.layout.layout_helpers import LAYOUT_HELPERS
+    from .widgets.wpf.constructors import WPF_CONSTRUCTORS
+    from .widgets.wpf.wpf_application import WPFApplication
+
+    toolkit = Toolkit(WPF_CONSTRUCTORS)
+    toolkit.update(CONSTRUCTORS)
+    toolkit.update(OPERATORS)
+    toolkit.update(LAYOUT_HELPERS)
+    toolkit.app = WPFApplication()
 
     return toolkit
 

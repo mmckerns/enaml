@@ -81,7 +81,7 @@ def constructor(base_path):
 #row_sel_model = base_sel_model.clone(shell_loader('row_selection_model')[1])
 
 
-WPYF_CONSTRUCTORS = dict((
+WPF_CONSTRUCTORS = dict((
     constructor('main_window'),
     #constructor('container'),
     #constructor('dialog'),
