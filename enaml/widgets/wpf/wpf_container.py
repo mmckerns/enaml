@@ -13,7 +13,7 @@ class WPFContainer(AbstractTkContainer):
     """ A WPF implementation of Container.
 
     """
-    def create(self):
+    def create(self, parent):
         """ Creates the underlying WPF widget.
 
         """
