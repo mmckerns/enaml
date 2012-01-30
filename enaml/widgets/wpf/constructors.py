@@ -58,8 +58,8 @@ def abstract_loader(c_name, base_path):
         The loader function for the abstract class.
 
     """
-    t_module_path = 'enaml.widgets.wpyf.' + 'wpyf_' + base_path
-    t_name = 'WPyF' + c_name
+    t_module_path = 'enaml.widgets.wpf.' + 'wpf_' + base_path
+    t_name = 'WPF' + c_name
     abstract_loader = importer(t_module_path, t_name)
     return abstract_loader
 

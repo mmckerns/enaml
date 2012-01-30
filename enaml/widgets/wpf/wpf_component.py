@@ -34,7 +34,7 @@ class WPFComponent(AbstractTkComponent):
         """ Initializes the attributes of the the Qt widget.
 
         """
-        super(WPyFComponent, self).initialize()
+        super(WPFComponent, self).initialize()
         self.set_enabled(self.shell_obj.enabled)
     
     def bind(self):
@@ -58,8 +58,7 @@ class WPFComponent(AbstractTkComponent):
             # widget. It appears that this only schedules the widget 
             # for destruction at a later time. So, we need to explicitly
             # unparent the widget as well.
-            widget.setParent(None)
-            widget.destroy()
+            widget.Dispose(True)
         self.widget = None
 
     #--------------------------------------------------------------------------
