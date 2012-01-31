@@ -4,8 +4,6 @@
 #------------------------------------------------------------------------------
 import weakref
 
-from wpyf.panel import Panel as _WPyFPanel
-
 from ..component import AbstractTkComponent
 
 
@@ -28,7 +26,7 @@ class WPFComponent(AbstractTkComponent):
         widgets.
 
         """
-        self.widget = _WPyFPanel()
+        self.widget = None
 
     def initialize(self):
         """ Initializes the attributes of the the WPF widget.

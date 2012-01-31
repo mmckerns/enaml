@@ -4,12 +4,13 @@
 #------------------------------------------------------------------------------
 import weakref
 
-import wpyf
+from wpyf.panel import Panel as _WPyFPanel
+from .wpf_layout_component import WPFLayoutComponent
 
 from ..container import AbstractTkContainer
 
 
-class WPFContainer(AbstractTkContainer):
+class WPFContainer(WPFLayoutComponent, AbstractTkContainer):
     """ A WPF implementation of Container.
 
     """
@@ -17,7 +18,8 @@ class WPFContainer(AbstractTkContainer):
         """ Creates the underlying WPF widget.
 
         """
-        self.widget = None
+        self.widget = _WPyFPanel()
+        parent.SetContent(self.widget)
 
     def initialize(self):
         """ Initializes the widget.

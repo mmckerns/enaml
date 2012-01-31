@@ -3,6 +3,7 @@
 #  All rights reserved.
 #------------------------------------------------------------------------------
 from wpyf.label import Label as _WPyFLabel
+from wpyf.panel import Panel as _WPyFPanel
 from .wpf_control import WPFControl
 
 from ..label import AbstractTkLabel
@@ -19,7 +20,9 @@ class WPFLabel(WPFControl, AbstractTkLabel):
         """ Creates the underlying WPF Label control.
 
         """
-        self.widget = _WPyFLabel()
+        shell = self.shell_obj
+        self.widget = _WPyFLabel(shell.text)
+        parent.AddLabel(self.widget, 0, 0)
 
     def initialize(self):
         """ Initializes the attributes on the underlying control.
@@ -49,7 +52,8 @@ class WPFLabel(WPFControl, AbstractTkLabel):
         """ Sets the label on the underlying control.
 
         """
-        self.widget = _WPyFLabel(label)
+        #self.widget.set_text(label)
+        pass
 
     def set_word_wrap(self, wrap):
         """ Sets the word wrapping on the underlying widget.
