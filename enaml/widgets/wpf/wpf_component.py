@@ -1,10 +1,10 @@
 #------------------------------------------------------------------------------
-#  Copyright (c) 2011, Enthought, Inc.
+#  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
 import weakref
 
-import wpyf
+from wpyf.panel import Panel as _WPyFPanel
 
 from ..component import AbstractTkComponent
 
@@ -16,7 +16,7 @@ class WPFComponent(AbstractTkComponent):
     #: The a reference to the shell object. Will be stored as a weakref.
     _shell_obj = lambda self: None
 
-    #: The Qt widget created by the component
+    #: The WPF widget created by the component
     widget = None
 
     #--------------------------------------------------------------------------
@@ -28,17 +28,17 @@ class WPFComponent(AbstractTkComponent):
         widgets.
 
         """
-        self.widget = wpyf.Control()
+        self.widget = _WPyFPanel()
 
     def initialize(self):
-        """ Initializes the attributes of the the Qt widget.
+        """ Initializes the attributes of the the WPF widget.
 
         """
         super(WPFComponent, self).initialize()
         self.set_enabled(self.shell_obj.enabled)
     
     def bind(self):
-        """ Bind any event/signal handlers for the Qt Widget. By default,
+        """ Bind any event handlers for the WPF Widget. By default,
         this is a no-op. Subclasses should reimplement this method as
         necessary to bind any widget event handlers or signals.
 
@@ -49,16 +49,10 @@ class WPFComponent(AbstractTkComponent):
     # Teardown Methods
     #--------------------------------------------------------------------------
     def destroy(self):
-        """ Destroys the underlying Qt widget.
+        """ Destroys the underlying WPF widget.
 
         """
         widget = self.widget
-        if widget:
-            # On Windows, it's not sufficient to simply destroy the
-            # widget. It appears that this only schedules the widget 
-            # for destruction at a later time. So, we need to explicitly
-            # unparent the widget as well.
-            widget.Dispose(True)
         self.widget = None
 
     #--------------------------------------------------------------------------
@@ -89,29 +83,18 @@ class WPFComponent(AbstractTkComponent):
     shell_obj = property(_get_shell_obj, _set_shell_obj)
         
     def disable_updates(self):
-        """ Disable rendering updates for the underlying Qt widget.
+        """ Disable rendering updates for the underlying WPF widget.
 
         """
-        # Freezing updates on a top-level window seems to cause 
-        # flicker on OSX the updates are reenabled. In this case, 
-        # just freeze the children instead.
-        if self.widget.isWindow():
-            for child in self.shell_obj.children:
-                child.disable_updates()
-        else:
-            self.widget.setUpdatesEnabled(False)
+        #self.widget.set_updates_enabled(False)
+        pass
 
     def enable_updates(self):
-        """ Enable rendering updates for the underlying Wx widget.
+        """ Enable rendering updates for the underlying WPF widget.
 
         """
-        # Freezing updates on a top-level window seems to cause 
-        # flicker on OSX the updates are reenabled. In this case, 
-        # just freeze the children instead.
-        if self.widget.isWindow():
-            for child in self.shell_obj.children:
-                child.enable_updates()
-        self.widget.setUpdatesEnabled(True)
+        #self.widget.set_updates_enabled(True)
+        pass
 
     #--------------------------------------------------------------------------
     # Shell Object Change Handlers 
@@ -130,13 +113,12 @@ class WPFComponent(AbstractTkComponent):
         """ Enable or disable the widget.
 
         """
-        #self.widget.setEnabled(enabled)
+        #self.widget.set_enabled(enabled)
         pass
 
     def set_visible(self, visible):
         """ Show or hide the widget.
 
         """
-        #self.widget.setVisible(visible)
-        self.widget.Show()
-
+        #self.widget.set_visible(visible)
+        pass
