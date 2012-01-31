@@ -3,11 +3,12 @@
 #  All rights reserved.
 #------------------------------------------------------------------------------
 import wpyf
+from .wpf_control import WPFControl
 
 from ..label import AbstractTkLabel
 
 
-class WPFLabel(AbstractTkLabel):
+class WPFLabel(WPFControl, AbstractTkLabel):
     """ A WPF implementation of Label.
 
     """
