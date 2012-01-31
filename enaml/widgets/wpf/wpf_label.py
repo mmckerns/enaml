@@ -3,7 +3,6 @@
 #  All rights reserved.
 #------------------------------------------------------------------------------
 from wpyf.label import Label as _WPyFLabel
-from wpyf.panel import Panel as _WPyFPanel
 from .wpf_control import WPFControl
 
 from ..label import AbstractTkLabel
