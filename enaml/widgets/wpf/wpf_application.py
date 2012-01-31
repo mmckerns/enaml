@@ -5,7 +5,7 @@
 from collections import deque
 from threading import Lock
 
-from application import Application
+from .wpf.application import Application
 
 from ..abstract_application import AbstractTkApplication
 
@@ -101,7 +101,7 @@ class WPFApplication(AbstractTkApplication):
         created, it is a no-op.
 
         """     
-        app = self._wpf_app
+        app = getattr(seld, '_wpy_app', None)
         if app is None:
             if not args:
                 args = ([''],)
@@ -114,7 +114,7 @@ class WPFApplication(AbstractTkApplication):
         raised if the application object is not yet created.
 
         """
-        app = self._wpf_app
+        app = getattr(seld, '_wpy_app', None)
         if app is None:
             msg = 'Cannot start event loop. Application object not created.'
             raise RuntimeError(msg)
@@ -129,7 +129,7 @@ class WPFApplication(AbstractTkApplication):
         otherwise.
 
         """
-        app = self._wpf_app
+        app = getattr(seld, '_wpy_app', None)
         return getattr(app, '_in_event_loop', False)
 
     def app_object(self):
@@ -137,7 +137,7 @@ class WPFApplication(AbstractTkApplication):
         does not exist.
 
         """
-        return self._wpf_app
+        return getattr(seld, '_wpy_app', None)
 
     
     def is_main_thread(self):

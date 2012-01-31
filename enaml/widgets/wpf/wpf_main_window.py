@@ -2,8 +2,9 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-import wpyf
-from .wpf_window import WPFWIndow
+from .wpf.window import Window
+
+from .wpf_window import WPFWindow
 
 from ..main_window import AbstractTkMainWindow
 
@@ -19,7 +20,7 @@ class WPFMainWindow(WPFWindow, AbstractTkMainWindow):
         """ Creates the underlying WPFMainWindow object.
 
         """
-        self.widget = None
+        self.widget = Window()
 
     def initialize(self):
         """ Initialize the WPFMainWindow object.

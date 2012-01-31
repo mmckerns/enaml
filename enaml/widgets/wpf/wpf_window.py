@@ -3,12 +3,12 @@
 #  All rights reserved.
 #------------------------------------------------------------------------------
 
-import wpyf
+from .wpf_component import WPFComponent
 
 from ..window import AbstractTkWindow
 
 
-class WPFWindow(AbstractTkWindow):
+class WPFWindow(WPFComponent, WPFSizable, AbstractTkWindow):
     """ A WPF implementation of a Window. It serves as a base class for 
     WPFMainWindow and WPFDialog. It is not meant to be used directly.
 
