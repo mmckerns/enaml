@@ -101,11 +101,13 @@ class WPFApplication(AbstractTkApplication):
         created, it is a no-op.
 
         """     
-        app = getattr(seld, '_wpy_app', None)
+        app = getattr(self, '_wpf_app', None)
+        print 'initializing app'
         if app is None:
             if not args:
-                args = ([''],)
-            app = Application(*args, **kwargs)   
+                args = ()
+            app = Application(*args, **kwargs)
+            print 'app initialized'
         self._wpf_app = app
     
     def start_event_loop(self):
@@ -114,30 +116,34 @@ class WPFApplication(AbstractTkApplication):
         raised if the application object is not yet created.
 
         """
-        app = getattr(seld, '_wpy_app', None)
+        app = getattr(self, '_wpf_app', None)
         if app is None:
             msg = 'Cannot start event loop. Application object not created.'
             raise RuntimeError(msg)
         
         if not getattr(app, '_in_event_loop', False):
-            app._in_event_loop = True
+            self._in_event_loop = True
+            print 'starting event loop'
             app.start()
-            app._in_event_loop = False
+            #import time
+            #time.sleep(60)
+            print 'event loop done'
+            self._in_event_loop = False
     
     def event_loop_running(self):
         """ Returns True if the main event loop is running, False 
         otherwise.
 
         """
-        app = getattr(seld, '_wpy_app', None)
-        return getattr(app, '_in_event_loop', False)
+        app = getattr(self, '_wpf_app', None)
+        return getattr(self, '_in_event_loop', False)
 
     def app_object(self):
         """ Returns the underlying application object, or None if one 
         does not exist.
 
         """
-        return getattr(seld, '_wpy_app', None)
+        return getattr(self, '_wpf_app', None)
 
     
     def is_main_thread(self):

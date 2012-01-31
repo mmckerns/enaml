@@ -43,7 +43,7 @@ class WPFComponent(AbstractTkComponent):
         necessary to bind any widget event handlers or signals.
 
         """
-        super(WPyFComponent, self).bind()
+        super(WPFComponent, self).bind()
 
     #--------------------------------------------------------------------------
     # Teardown Methods
@@ -130,11 +130,13 @@ class WPFComponent(AbstractTkComponent):
         """ Enable or disable the widget.
 
         """
-        self.widget.setEnabled(enabled)
+        #self.widget.setEnabled(enabled)
+        pass
 
     def set_visible(self, visible):
         """ Show or hide the widget.
 
         """
-        self.widget.setVisible(visible)
+        #self.widget.setVisible(visible)
+        self.widget.Show()
 

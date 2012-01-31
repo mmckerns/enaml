@@ -4,6 +4,7 @@
 #------------------------------------------------------------------------------
 
 from .wpf_component import WPFComponent
+from .wpf_sizable import WPFSizable
 
 from ..window import AbstractTkWindow
 

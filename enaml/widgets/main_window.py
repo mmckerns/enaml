@@ -115,7 +115,8 @@ class MainWindow(Window):
         # that is less than any relayouts the may be triggered by 
         # pending events. This means that the layout queue should 
         # finish processing, and then the window will be shown.
-        app.schedule(self.set_visible, (True,), priority=75)
+        #app.schedule(self.set_visible, (True,), priority=75)
+        self.toolkit_widget.Show() # XXX remove me !!!!
         app.start_event_loop()
         
     def hide(self):
