@@ -83,7 +83,7 @@ def constructor(base_path):
 
 WPF_CONSTRUCTORS = dict((
     constructor('main_window'),
-    #constructor('container'),
+    constructor('container'),
     #constructor('dialog'),
     #constructor('calendar'),
     #constructor('check_box'),
@@ -91,7 +91,7 @@ WPF_CONSTRUCTORS = dict((
     #constructor('field'),
     #constructor('html'),
     #constructor('image'),
-    #constructor('label'),
+    constructor('label'),
     #constructor('push_button'),
     #constructor('radio_button'),
     #constructor('slider'),
