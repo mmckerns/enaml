@@ -1,0 +1,10 @@
+#------------------------------------------------------------------------------
+#  Copyright (c) 2012, Enthought, Inc.
+#  All rights reserved.
+#------------------------------------------------------------------------------
+
+Main(MainWindow):
+    Container:
+        PushButton:
+            text = "Hello, world!"
+            clicked >> print("Hello world!")
