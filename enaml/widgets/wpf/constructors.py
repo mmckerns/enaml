@@ -92,7 +92,7 @@ WPF_CONSTRUCTORS = dict((
     #constructor('html'),
     #constructor('image'),
     constructor('label'),
-    #constructor('push_button'),
+    constructor('push_button'),
     #constructor('radio_button'),
     #constructor('slider'),
     #constructor('spin_box'),
