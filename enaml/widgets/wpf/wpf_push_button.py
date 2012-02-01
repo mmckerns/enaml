@@ -2,6 +2,7 @@
 #  Copyright (c) 2012, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
+from wpyf.button import Button as _WPyFButton
 from .wpf_control import WPFControl
 
 from ..push_button import AbstractTkPushButton
@@ -18,7 +19,9 @@ class WPFPushButton(WPFControl, AbstractTkPushButton):
         """ Creates the underlying WPF PushButton control.
 
         """
-        self.widget = None
+        shell = self.shell_obj
+        self.widget = _WPyFButton(shell.text)
+        parent.Add(self.widget, 0, 0)
 
     def initialize(self):
         """ Intializes the widget with the attributes of this instance.
@@ -79,5 +82,5 @@ class WPFPushButton(WPFControl, AbstractTkPushButton):
         """ Sets the label on the button control.
 
         """
-        self.widget.setText(label)
+        self.widget.SetText(label)
 
