@@ -4,7 +4,11 @@
 #------------------------------------------------------------------------------
 
 Main(MainWindow):
+    id: window
+    attr counter = 0
+    counter >> setattr(button, 'text', 'Changed '+str(window.counter))
     Container:
         PushButton:
+            id: button
             text = "Hello, world!"
-            clicked >> print("Hello world!")
+            clicked >> setattr(window, 'counter', window.counter+1)

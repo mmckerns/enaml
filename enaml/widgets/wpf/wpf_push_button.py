@@ -12,6 +12,10 @@ class WPFPushButton(WPFControl, AbstractTkPushButton):
     """ A WPF implementation of PushButton.
 
     """
+    #def __init__(self, *args, **kwargs):
+    #    super(WPFPushButton, self).__init__(*args, **kwargs)
+    #    self._bound_methods = {}
+
     #--------------------------------------------------------------------------
     # Setup methods
     #--------------------------------------------------------------------------
@@ -36,6 +40,9 @@ class WPFPushButton(WPFControl, AbstractTkPushButton):
         """
         super(WPFPushButton, self).bind()
         widget = self.widget
+        #bound_method = self.on_clicked
+        #self._bound_methods['on_clicked'] = bound_method
+        widget.BindOnClick(self.on_clicked)
 	# XXX: Hook up the WPF events here
         #widget.clicked.connect(self.on_clicked)
         #widget.pressed.connect(self.on_pressed)
@@ -57,9 +64,11 @@ class WPFPushButton(WPFControl, AbstractTkPushButton):
         """ The event handler for the button's clicked event.
 
         """
+        print 'on_clicked'
         shell = self.shell_obj
         shell._down = False
         shell.clicked()
+        print 'done'
 
     def on_pressed(self):
         """ The event handlers for the button's pressed event.
@@ -82,5 +91,10 @@ class WPFPushButton(WPFControl, AbstractTkPushButton):
         """ Sets the label on the button control.
 
         """
+        print 'setting label'
         self.widget.SetText(label)
+        print 'label set'
 
+
+def on_clicked():
+    print 'clicked'
